@@ -1,5 +1,5 @@
 import express from 'express';
-import youtubedl from 'youtube-dl-exec';
+import play from 'play-dl';
 
 const router = express.Router();
 
@@ -13,23 +13,26 @@ router.get('/', async (req, res) => {
   const url = `https://www.youtube.com/watch?v=${id}`;
 
   try {
-    // Extract the direct audio URL using youtube-dl-exec (which uses yt-dlp)
-    const streamUrl = await youtubedl(url, {
-      getUrl: true,
-      format: 'bestaudio',
-      noCheckCertificates: true,
-      noWarnings: true,
-      preferFreeFormats: true,
+    // Check if the link is valid and get stream info
+    const streamInfo = await play.stream(url, {
+      quality: 0, // 0 is best audio
+      seek: 0
     });
 
-    if (!streamUrl) {
-      return res.status(404).json({ error: 'No audio format found' });
+    if (!streamInfo || !streamInfo.url) {
+      throw new Error('Failed to extract stream URL');
     }
 
-    // Redirect the HTML5 audio player directly to YouTube's high-speed CDN
-    res.redirect(302, streamUrl);
+    // Redirect to the direct audio stream URL
+    res.redirect(302, streamInfo.url);
   } catch (error) {
     console.error('Streaming extraction error:', error.message);
+    
+    // Detailed error logging for Render troubleshooting
+    if (error.message.includes('429')) {
+      return res.status(429).json({ error: 'YouTube is rate-limiting the server. Try again later.' });
+    }
+    
     res.status(500).json({ error: 'Server error during stream preparation' });
   }
 });
