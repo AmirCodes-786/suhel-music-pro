@@ -39,8 +39,7 @@ router.get('/', async (req, res) => {
           duration: 0,
           source: 'youtube',
         }));
-        return res.json({ tracks: results });
-      }
+      return res.json({ tracks: results });
     }
   } catch (err) {
     console.warn('[Search] YouTube API failed/empty, falling back to yt-search...', err.response?.data?.error?.message || err.message);
