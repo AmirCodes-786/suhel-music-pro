@@ -13,27 +13,36 @@ router.get('/', async (req, res) => {
   const url = `https://www.youtube.com/watch?v=${id}`;
 
   try {
-    // Check if the link is valid and get stream info
-    const streamInfo = await play.stream(url, {
-      quality: 0, // 0 is best audio
-      seek: 0
+    // Get the stream from play-dl
+    const stream = await play.stream(url, {
+      quality: 0, // Best audio
     });
 
-    if (!streamInfo || !streamInfo.url) {
-      throw new Error('Failed to extract stream URL');
-    }
+    // Set headers for audio streaming
+    res.setHeader('Content-Type', 'audio/mpeg');
+    // YouTube streams are usually chunked/variable, so we don't set Content-Length
+    
+    // Pipe the stream directly to the response
+    stream.stream.pipe(res);
 
-    // Redirect to the direct audio stream URL
-    res.redirect(302, streamInfo.url);
+    // Handle stream errors
+    stream.stream.on('error', (err) => {
+      console.error('Stream piping error:', err.message);
+      if (!res.headersSent) {
+        res.status(500).send('Streaming failed');
+      }
+    });
+
   } catch (error) {
     console.error('Streaming extraction error:', error.message);
     
-    // Detailed error logging for Render troubleshooting
     if (error.message.includes('429')) {
-      return res.status(429).json({ error: 'YouTube is rate-limiting the server. Try again later.' });
+      return res.status(429).json({ error: 'YouTube rate limit hit. Try again later.' });
     }
     
-    res.status(500).json({ error: 'Server error during stream preparation' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Server error during stream preparation' });
+    }
   }
 });
 
