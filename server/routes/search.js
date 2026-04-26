@@ -26,8 +26,9 @@ router.get('/', async (req, res) => {
         },
       });
 
-        const protocol = req.protocol;
         const host = req.get('host');
+        // On Render/Vercel, always use https, otherwise use req.protocol
+        const protocol = (host.includes('localhost') || host.includes('127.0.0.1')) ? req.protocol : 'https';
         const backendBaseUrl = `${protocol}://${host}`;
 
         const results = response.data.items.map((item) => ({
@@ -49,8 +50,8 @@ router.get('/', async (req, res) => {
   try {
     const ytSearchResults = await searchYouTube(q);
     if (ytSearchResults && ytSearchResults.length > 0) {
-      const protocol = req.protocol;
       const host = req.get('host');
+      const protocol = (host.includes('localhost') || host.includes('127.0.0.1')) ? req.protocol : 'https';
       const backendBaseUrl = `${protocol}://${host}`;
 
       const results = ytSearchResults.map((video) => ({

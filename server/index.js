@@ -9,6 +9,9 @@ dotenv.config(); // Standard dotenv config
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Enable trust proxy for Render/Cloud environments
+app.set('trust proxy', 1);
+
 // Configure CORS
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*', // Allow specific frontend or all
