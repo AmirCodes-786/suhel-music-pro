@@ -1,72 +1,64 @@
-# 🚀 Deployment Guide: Suhel Tunes
+# 🚀 Deployment Guide: Suhel Music Pro
 
-This guide outlines the steps to deploy your music streaming application with the **Frontend on Vercel** and the **Backend on Render**.
-
----
-
-## 1. Backend Deployment (Render)
-
-Render will host your Express server.
-
-### Steps:
-1.  **Create a New Web Service**: Sign in to [Render](https://render.com/) and click **New > Web Service**.
-2.  **Connect GitHub**: Select your repository.
-3.  **Configure Service**:
-    *   **Name**: `suhel-tunes-api` (or your choice)
-    *   **Root Directory**: `server` 
-    *   **Runtime**: `Node`
-    *   **Build Command**: `npm install`
-    *   **Start Command**: `npm start`
-4.  **Add Environment Variables**: Click **Advanced > Add Environment Variable**:
-    *   `JAMENDO_CLIENT_ID`: Your Jamendo API Key.
-    *   `YOUTUBE_API_KEY`: Your YouTube Data API v3 Key.
-    *   `FRONTEND_URL`: Your deployed Vercel URL (e.g., `https://suhel-tunes.vercel.app`).
-5.  **Deploy**: Click **Create Web Service**. 
-    *   *Note: Note down the URL provided by Render (e.g., `https://suhel-tunes-api.onrender.com`).*
+Follow these steps to deploy your full-stack music streaming application.
 
 ---
 
-## 2. Frontend Deployment (Vercel)
+## 🏗️ 1. Backend Deployment (Render)
 
-Vercel will host your React (Vite) application.
+The Node.js server handles YouTube searching and audio streaming.
 
-### Steps:
-1.  **Import Project**: Sign in to [Vercel](https://vercel.com/) and click **Add New > Project**.
-2.  **Configure Project**:
-    *   **Framework Preset**: `Vite`
-    *   **Root Directory**: Leave as `./` (the root of the repo).
-    *   **Build Command**: `npm run build`
-    *   **Output Directory**: `dist`
-3.  **Add Environment Variables**:
-    *   `VITE_API_URL`: The URL of your **Render** backend (e.g., `https://suhel-tunes-api.onrender.com`).
-    *   `VITE_JAMENDO_CLIENT_ID`: Your Jamendo API Key.
-4.  **Deploy**: Click **Deploy**.
+### Configuration
+1. **New Web Service**: Connect your GitHub repo to [Render](https://render.com/).
+2. **Root Directory**: `server`
+3. **Build Command**: `npm install`
+4. **Start Command**: `npm start`
 
----
-
-## 🔑 Summary of Environment Variables
-
-| Variable | Location | Used By | Description |
-| :--- | :--- | :--- | :--- |
-| `VITE_API_URL` | Vercel | Frontend | Tells the frontend where to find the backend API. |
-| `VITE_JAMENDO_CLIENT_ID`| Vercel | Frontend | Public key for Jamendo API calls. |
-| `FRONTEND_URL` | Render | Backend | Allows your frontend to bypass CORS security. |
-| `YOUTUBE_API_KEY` | Render | Backend | Secret key for YouTube search. |
-| `JAMENDO_CLIENT_ID` | Render | Backend | Secret key for backend fallback search. |
+### Environment Variables
+| Key | Value / Description |
+| :--- | :--- |
+| `FRONTEND_URL` | Your Vercel URL (e.g., `https://suhel-music.vercel.app`) |
+| `YOUTUBE_API_KEY` | Your Google Cloud YouTube Data API Key |
+| `JAMENDO_CLIENT_ID`| Your Jamendo Client ID |
 
 ---
 
-## 🔗 How Shared Links Work
+## 🎨 2. Frontend Deployment (Vercel)
 
-The app is configured to use `window.location.origin` for sharing. 
-*   When you click "Share", it generates a link like: `https://your-app.vercel.app/play?source=youtube&id=XYZ`
-*   The `vercel.json` file handles the routing, so even if the user refreshes or opens the link directly, Vercel will point them to the correct React route.
-*   The `ShareLinkHandler.jsx` component then reads the ID and asks your **Render** backend for the stream.
+The React frontend provides the premium user interface.
+
+### Configuration
+1. **New Project**: Connect your GitHub repo to [Vercel](https://vercel.com/).
+2. **Framework Preset**: `Vite`
+3. **Root Directory**: `./` (Root)
+4. **Build Command**: `npm run build`
+5. **Output Directory**: `dist`
+
+### Environment Variables
+| Key | Value / Description |
+| :--- | :--- |
+| `VITE_API_URL` | Your Render URL (e.g., `https://suhel-music-api.onrender.com`) |
+| `VITE_JAMENDO_CLIENT_ID` | Your Jamendo Client ID |
 
 ---
 
-## 🛠️ Troubleshooting
+## 🛠️ 3. Post-Deployment Checklist
 
-*   **Mixed Content Error**: Ensure your `VITE_API_URL` starts with `https://`.
-*   **CORS Error**: Double-check that `FRONTEND_URL` in Render matches your Vercel URL exactly (no trailing slash).
-*   **Search Fails**: Check the Render logs to see if your YouTube API key has reached its daily quota.
+### ✅ Verify CORS
+Ensure the `FRONTEND_URL` in Render matches your Vercel domain exactly (no trailing slash). This prevents "Blocked by CORS" errors.
+
+### ✅ Verify API Connectivity
+Once both are deployed, open your Vercel site and try searching for a song. If results appear, the connection is successful.
+
+### ✅ Shareable Links
+The application uses dynamic routing. Links shared via the player (e.g., `/play?source=youtube&id=...`) are handled by `vercel.json` and will load the specific track automatically.
+
+---
+
+## 📂 Project Structure Note
+*   **Root**: Contains the React frontend and Vercel configuration.
+*   **`/server`**: Contains the Express backend and Render configuration.
+*   **`.env.example`**: Use this as a template for your production environment variables.
+
+---
+*Created by Antigravity AI*
