@@ -26,17 +26,12 @@ router.get('/', async (req, res) => {
         },
       });
 
-        const host = req.get('host');
-        // On Render/Vercel, always use https, otherwise use req.protocol
-        const protocol = (host.includes('localhost') || host.includes('127.0.0.1')) ? req.protocol : 'https';
-        const backendBaseUrl = `${protocol}://${host}`;
-
         const results = response.data.items.map((item) => ({
           id: item.id.videoId,
           name: item.snippet.title.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&'),
           artist_name: item.snippet.channelTitle,
           image: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default?.url,
-          audio: `${backendBaseUrl}/api/stream?id=${item.id.videoId}`,
+          audio: `/api/stream?id=${item.id.videoId}`,
           duration: 0,
           source: 'youtube',
         }));
@@ -50,16 +45,12 @@ router.get('/', async (req, res) => {
   try {
     const ytSearchResults = await searchYouTube(q);
     if (ytSearchResults && ytSearchResults.length > 0) {
-      const host = req.get('host');
-      const protocol = (host.includes('localhost') || host.includes('127.0.0.1')) ? req.protocol : 'https';
-      const backendBaseUrl = `${protocol}://${host}`;
-
       const results = ytSearchResults.map((video) => ({
         id: video.videoId,
         name: video.title,
         artist_name: video.author.name,
         image: video.thumbnail,
-        audio: `${backendBaseUrl}/api/stream?id=${video.videoId}`,
+        audio: `/api/stream?id=${video.videoId}`,
         duration: video.seconds || 0,
         source: 'youtube',
       }));

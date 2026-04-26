@@ -4,7 +4,15 @@ import dotenv from 'dotenv';
 import searchRoute from './routes/search.js';
 import streamRoute from './routes/stream.js';
 
-dotenv.config(); // Standard dotenv config
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from both the server directory and the root directory
+dotenv.config(); // Checks ./server/.env
+dotenv.config({ path: path.join(__dirname, '../.env') }); // Checks root .env
 
 const app = express();
 const PORT = process.env.PORT || 5000;

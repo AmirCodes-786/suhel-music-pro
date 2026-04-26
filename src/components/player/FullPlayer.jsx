@@ -37,7 +37,7 @@ const FullPlayer = ({ seek }) => {
 
   const handleShare = useCallback(() => {
     if (!currentTrack) return;
-    const url = `${window.location.origin}/play?source=${currentTrack.source}&id=${currentTrack.id}`;
+    const url = `${window.location.origin}/?source=${currentTrack.source}&id=${currentTrack.id}`;
     navigator.clipboard.writeText(url);
     addToast('Share link copied to clipboard!', 'success');
   }, [currentTrack, addToast]);

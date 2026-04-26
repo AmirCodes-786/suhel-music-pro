@@ -46,7 +46,7 @@ const ShareLinkHandler = () => {
                 name: 'Shared YouTube Track',
                 artist_name: 'YouTube',
                 image: '',
-                audio: `${import.meta.env.VITE_API_URL}/api/stream?id=${id}`,
+                audio: `/api/stream?id=${id}`,
                 duration: 0,
                 source: 'youtube'
               };
