@@ -1,0 +1,122 @@
+.main-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-6);
+  padding-bottom: calc(var(--player-height) + var(--space-10));
+}
+
+.sidebar-expanded .main-content {
+  margin-left: 0; /* Sidebar is fixed but layout handles width */
+}
+
+.sidebar-collapsed .main-content {
+  margin-left: 0;
+}
+
+/* Card Grid styles (used globally from CardGrid component) */
+.card-grid-section {
+  margin-bottom: var(--space-10);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  gap: var(--space-4);
+}
+
+.section-header h2 {
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+.section-action button,
+.section-action a {
+  font-size: var(--text-sm);
+  color: var(--text-accent);
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.section-action button:hover,
+.section-action a:hover {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: var(--space-5);
+}
+
+/* Toast */
+.toast-container {
+  position: fixed;
+  bottom: calc(var(--player-height) + 20px);
+  right: 20px;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.toast {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: white;
+  backdrop-filter: blur(20px);
+  animation: fadeInUp 0.3s ease-out;
+  max-width: 360px;
+}
+
+.toast.info { background: rgba(99, 102, 241, 0.9); }
+.toast.success { background: rgba(52, 211, 153, 0.9); }
+.toast.error { background: rgba(248, 113, 113, 0.9); }
+.toast.warning { background: rgba(251, 191, 36, 0.9); color: #111; }
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .page-content {
+    padding: var(--space-4);
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-content {
+    margin-left: var(--sidebar-collapsed);
+  }
+}

@@ -1,0 +1,99 @@
+.track-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.track-menu-trigger {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.track-menu-trigger:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.track-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+  padding: 6px;
+}
+
+.track-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.track-menu-item:hover {
+  background: var(--bg-hover);
+  color: var(--primary-color);
+}
+
+.track-menu-item svg {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.track-menu-item:hover svg {
+  color: var(--primary-color);
+}
+
+.track-menu-playlists {
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-menu-header {
+  padding: 8px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 4px;
+}
+
+.no-playlists-msg {
+  padding: 12px 14px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.back-btn {
+  margin-top: 4px;
+  border-top: 1px solid var(--border-color);
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
